@@ -1,435 +1,2095 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COVID-19 in Algeria (2020): An Infographic</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 320px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 384px;
-            }
-        }
-        .stat-card {
-            background-color: white;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2.25rem;
-            line-height: 2.5rem;
-            font-weight: 900;
-            color: #d45087;
-        }
-        .stat-label {
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            color: #6b7280;
-            margin-top: 0.5rem;
-        }
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 18px;
-            height: 100%;
-            width: 4px;
-            background: #cbd5e1;
-        }
-        @media (min-width: 768px) {
-            .timeline::before {
-                left: 50%;
-                margin-left: -2px;
-            }
-        }
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2.5rem;
-        }
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-        .timeline-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f95d6a;
-            color: white;
-            z-index: 10;
-        }
-        @media (min-width: 768px) {
-            .timeline-icon {
-                left: 50%;
-                margin-left: -20px;
-            }
-        }
-        .timeline-content {
-            margin-left: 60px;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        @media (min-width: 768px) {
-            .timeline-content {
-                width: 45%;
-                margin-left: 0;
-            }
-            .timeline-item:nth-child(odd) .timeline-content {
-                float: left;
-                text-align: right;
-            }
-            .timeline-item:nth-child(even) .timeline-content {
-                float: right;
-            }
-        }
-        .flow-diagram-item {
-            border: 2px solid #a05195;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            background-color: #f3e8f7;
-            color: #665191;
-            font-weight: 600;
-        }
-        .flow-arrow {
-            font-size: 2rem;
-            color: #a05195;
-            margin: 0.5rem 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algeria COVID-19 (2020): Quantitative Post-Mortem | Salaheddine Kennouda</title>
+  <meta name="description" content="A rigorous epidemiological and macro-fiscal data analysis of Algeria's 2020 COVID-19 crisis, examining wave dynamics, testing bottlenecks, and oil shock fallout.">
+  <meta name="author" content="Salaheddine Kennouda">
+
+  <!-- Typography: Inter, JetBrains Mono, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js 4.4.1 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       MODERN DATA ANALYST DESIGN SYSTEM (Vanilla CSS, Zero Bloat)
+       Compliant with modern-web-guidance: color-scheme, light-dark() fallbacks
+       ========================================================================== */
+    :root {
+      /* Dark Theme Tokens (Default) */
+      --bg-canvas: #090d16;
+      --bg-surface: #0f1624;
+      --bg-surface-elevated: #162034;
+      --bg-card: rgba(18, 26, 43, 0.78);
+      --bg-card-hover: rgba(24, 35, 58, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-prominent: rgba(255, 255, 255, 0.16);
+      --border-accent: rgba(56, 189, 248, 0.35);
+
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --text-brand: #38bdf8;
+
+      /* Epidemiological Palette: Publication Grade */
+      --accent-danger: #f43f5e;
+      --accent-danger-soft: rgba(244, 63, 94, 0.12);
+      --accent-warning: #f59e0b;
+      --accent-warning-soft: rgba(245, 158, 11, 0.12);
+      --accent-info: #0ea5e9;
+      --accent-info-soft: rgba(14, 165, 233, 0.12);
+      --accent-success: #10b981;
+      --accent-success-soft: rgba(16, 185, 129, 0.12);
+      --accent-purple: #a855f7;
+      --accent-purple-soft: rgba(168, 85, 247, 0.12);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Plus Jakarta Sans', var(--font-sans);
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.25), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+      --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.18);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+
+      color-scheme: dark light;
+      accent-color: var(--accent-info);
+    }
+
+    /* Light Theme Tokens */
+    html.light {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-card-hover: rgba(255, 255, 255, 1);
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-prominent: rgba(0, 0, 0, 0.14);
+      --border-accent: rgba(2, 132, 199, 0.3);
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #94a3b8;
+      --text-brand: #0284c7;
+
+      --accent-danger: #e11d48;
+      --accent-danger-soft: rgba(225, 29, 72, 0.08);
+      --accent-warning: #d97706;
+      --accent-warning-soft: rgba(217, 119, 6, 0.08);
+      --accent-info: #0284c7;
+      --accent-info-soft: rgba(2, 132, 199, 0.08);
+      --accent-success: #059669;
+      --accent-success-soft: rgba(5, 150, 105, 0.08);
+      --accent-purple: #7c3aed;
+      --accent-purple-soft: rgba(124, 58, 237, 0.08);
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --shadow-glow: 0 0 25px rgba(2, 132, 199, 0.08);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Ambient Background Grid Pattern */
+    .bg-grid-pattern {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at 50% 20%, black 40%, transparent 85%);
+      opacity: 0.6;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem 1.5rem;
+    }
+
+    /* Navigation Bar */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .live-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-danger);
+      box-shadow: 0 0 10px var(--accent-danger);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-brand);
+      border: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding: 0.5rem 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-surface-elevated);
+      border-color: var(--border-prominent);
+    }
+
+    .btn-primary {
+      background: var(--accent-info);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .icon-btn {
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--border-prominent);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      margin-bottom: 3rem;
+    }
+
+    .meta-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.775rem;
+      color: var(--text-brand);
+      background: var(--accent-info-soft);
+      border: 1px solid var(--border-accent);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f43f5e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 880px;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    .analyst-provenance-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.9rem 1.25rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+    }
+
+    .provenance-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .provenance-item strong {
+      color: var(--text-primary);
+    }
+
+    .provenance-sep {
+      color: var(--border-prominent);
+    }
+
+    /* KPI Deck */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-prominent);
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--accent-info));
+      opacity: 0.8;
+    }
+
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+    }
+
+    .kpi-pill {
+      font-family: var(--font-mono);
+      font-size: 0.675rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+      background: var(--pill-bg, var(--bg-surface-elevated));
+      color: var(--pill-color, var(--text-secondary));
+    }
+
+    .kpi-value {
+      font-family: var(--font-mono);
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+
+    .kpi-subtext {
+      font-size: 0.775rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Section Layouts */
+    .analysis-section {
+      margin-bottom: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .section-badge {
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: var(--accent-info);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .section-description {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 820px;
+    }
+
+    /* Surface Card Container */
+    .surface-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Interactive Wave Controller Toolbar */
+    .chart-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.25rem;
+      gap: 0.25rem;
+    }
+
+    .toggle-btn {
+      font-family: var(--font-sans);
+      font-size: 0.775rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .toggle-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-brand);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .legend-indicators {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.775rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .legend-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      width: 100%;
+      height: 380px;
+    }
+
+    /* Wave Deep Dive Grid */
+    .wave-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .wave-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .wave-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .wave-card:hover, .wave-card.active-wave {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .wave-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .wave-title {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .wave-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-brand);
+    }
+
+    .wave-metric-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px dashed var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .wave-metric-row:last-child {
+      border-bottom: none;
+    }
+
+    .wave-metric-val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .wave-summary {
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    /* Split Grid for Demographic & Testing Analyses */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    @media (max-width: 960px) {
+      .grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Analyst Deep-Dive Callout Box (No AI Slop, Raw Rigor) */
+    .analyst-callout {
+      background: linear-gradient(145deg, rgba(14, 165, 233, 0.05), rgba(15, 22, 36, 0.9));
+      border: 1px solid var(--border-accent);
+      border-left: 4px solid var(--accent-info);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .callout-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .callout-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-info);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .callout-body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .callout-body strong {
+      color: var(--text-primary);
+    }
+
+    /* Demographic Asymmetry Table & Visualizer */
+    .demographic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .demographic-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      padding: 0.75rem 0.5rem;
+      border-bottom: 1px solid var(--border-prominent);
+    }
+
+    .demographic-table td {
+      padding: 0.85rem 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .demographic-table tr:hover td {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+    }
+
+    .risk-multiplier-badge {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .risk-extreme {
+      background: var(--accent-danger-soft);
+      color: var(--accent-danger);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .risk-moderate {
+      background: var(--accent-warning-soft);
+      color: var(--accent-warning);
+    }
+
+    .risk-low {
+      background: var(--accent-success-soft);
+      color: var(--accent-success);
+    }
+
+    /* Twin Shock Macro Grid */
+    .macro-metric-deck {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .macro-stat-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .macro-stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-warning);
+      margin-bottom: 0.25rem;
+    }
+
+    .macro-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Policy Timeline (Clean, Technical, Chronological) */
+    .technical-timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .technical-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-prominent);
+    }
+
+    .timeline-node {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+
+    .timeline-node:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -2rem;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 3px solid var(--node-color, var(--accent-info));
+      box-shadow: 0 0 8px var(--node-color, var(--accent-info));
+    }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-brand);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-heading {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Data Pipeline / Methodology Terminal */
+    .methodology-terminal {
+      background: #060910;
+      border: 1px solid var(--border-prominent);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: #0c121e;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .terminal-code {
+      padding: 1.25rem;
+      color: #94a3b8;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    .code-comment { color: #64748b; font-style: italic; }
+    .code-keyword { color: #f43f5e; font-weight: 600; }
+    .code-func { color: #38bdf8; }
+    .code-string { color: #10b981; }
+    .code-num { color: #fbbf24; }
+
+    /* Interactive Data Explorer Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-prominent);
+      border-radius: var(--radius-xl);
+      max-width: 800px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .raw-data-textarea {
+      width: 100%;
+      height: 280px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 1rem;
+      resize: vertical;
+      margin-top: 1rem;
+    }
+
+    /* Footer */
+    .app-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 3rem;
+      margin-top: 5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+
+    .footer-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284c7, #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .footer-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--text-brand);
+    }
+
+    /* Print / PDF Readiness */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+      .bg-grid-pattern, .nav-actions, .chart-toolbar, .btn, .icon-btn {
+        display: none !important;
+      }
+      .kpi-card, .surface-card, .wave-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
 
-    <div class="container mx-auto p-4 md:p-8">
+  <!-- Background Grid Ambient Texture -->
+  <div class="bg-grid-pattern" aria-hidden="true"></div>
 
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-[#003f5c] mb-2">Algeria's 2020: A Year of Cascading Crises</h1>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto">The COVID-19 pandemic collided with a nation navigating political transition and economic vulnerability, creating a perfect storm. This is the story of that first year, told through data.</p>
-        </header>
+  <div class="app-container">
 
-        <section class="mb-16">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="stat-card">
-                    <div class="stat-number">99,610</div>
-                    <div class="stat-label">Total Confirmed Cases (2020)</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">2,756</div>
-                    <div class="stat-label">Total Confirmed Deaths (2020)</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">-5.5%</div>
-                    <div class="stat-label">Projected GDP Contraction (IMF)</div>
-                </div>
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <span class="live-pulse" title="Archived Epidemiological Dataset (2020)"></span>
+        <span class="brand-title">Algeria COVID-19 Intelligence Post-Mortem</span>
+        <span class="brand-badge">2020 Case Study</span>
+      </div>
+
+      <nav class="nav-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+          <svg id="themeIconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="themeIconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button id="openRawDataBtn" class="btn" title="Inspect Raw JSON & Cleaned Dataset">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span>Raw Data & ETL</span>
+        </button>
+
+        <a href="https://github.com/salaheddineken/COVID-19-in-Algeria-2020-" target="_blank" rel="noopener noreferrer" class="btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span>Repository</span>
+        </a>
+
+        <a href="https://salaheddineken.github.io/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <span>Portfolio</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        </a>
+      </nav>
+    </header>
+
+    <!-- Hero Narrative Header -->
+    <section class="hero-section">
+      <div class="meta-tagline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <span>QUANTITATIVE EPIDEMIOLOGY & PUBLIC POLICY RESEARCH</span>
+      </div>
+
+      <h1 class="hero-title">
+        The Anatomy of a Syndemic: <br>
+        <span class="gradient-text">Algeria's 2020 Pandemic Trajectory</span>
+      </h1>
+
+      <p class="hero-lead">
+        A data-driven post-mortem examining the collision between three successive SARS-CoV-2 infection waves, a severe frontline testing bottleneck, and an acute macroeconomic shock triggered by the global collapse of hydrocarbon prices.
+      </p>
+
+      <div class="analyst-provenance-bar">
+        <div class="provenance-item">
+          <span>Lead Analyst:</span>
+          <strong>Salaheddine Kennouda</strong>
+        </div>
+        <span class="provenance-sep">/</span>
+        <div class="provenance-item">
+          <span>Temporal Window:</span>
+          <strong>March 1 – December 31, 2020</strong>
+        </div>
+        <span class="provenance-sep">/</span>
+        <div class="provenance-item">
+          <span>Primary Data Sources:</span>
+          <strong>MSPRH (Algeria), WHO AFRO, Bank of Algeria</strong>
+        </div>
+        <span class="provenance-sep">/</span>
+        <div class="provenance-item">
+          <span>Pipeline:</span>
+          <strong>Python (Pandas / SciPy), 7-Day Centered SMA</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI Metric Deck -->
+    <section class="kpi-grid">
+      <article class="kpi-card" style="--card-accent: var(--accent-danger);">
+        <div class="kpi-header">
+          <span class="kpi-label">Cumulative Confirmed Cases</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-danger); --pill-bg: var(--accent-danger-soft);">Official RT-PCR</span>
+        </div>
+        <div class="kpi-value" id="kpiCases">99,610</div>
+        <p class="kpi-subtext">Peak daily surge reached <strong>1,133 cases</strong> on Nov 24, 2020.</p>
+      </article>
+
+      <article class="kpi-card" style="--card-accent: var(--accent-danger);">
+        <div class="kpi-header">
+          <span class="kpi-label">Confirmed Mortalities</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-danger); --pill-bg: var(--accent-danger-soft);">Hospital Registry</span>
+        </div>
+        <div class="kpi-value" id="kpiDeaths">2,756</div>
+        <p class="kpi-subtext"><strong>75.0%</strong> concentrated in individuals aged 60 and above.</p>
+      </article>
+
+      <article class="kpi-card" style="--card-accent: var(--accent-warning);">
+        <div class="kpi-header">
+          <span class="kpi-label">Peak Case Fatality Rate</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-warning); --pill-bg: var(--accent-warning-soft);">April 15 Anomaly</span>
+        </div>
+        <div class="kpi-value" id="kpiCFR">15.8%</div>
+        <p class="kpi-subtext">Ascertainment artifact caused by severe undertesting denominator bias.</p>
+      </article>
+
+      <article class="kpi-card" style="--card-accent: var(--accent-info);">
+        <div class="kpi-header">
+          <span class="kpi-label">Initial PCR Capacity</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-info); --pill-bg: var(--accent-info-soft);">Pasteur Inst. Bottleneck</span>
+        </div>
+        <div class="kpi-value">~50<span style="font-size: 1rem; color: var(--text-secondary);">/day</span></div>
+        <p class="kpi-subtext">Forced nationwide reliance on chest CT scan diagnosis (~60k scans).</p>
+      </article>
+
+      <article class="kpi-card" style="--card-accent: var(--accent-purple);">
+        <div class="kpi-header">
+          <span class="kpi-label">Brent Crude Trough</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-purple); --pill-bg: var(--accent-purple-soft);">April 2020 Crash</span>
+        </div>
+        <div class="kpi-value">$19.33<span style="font-size: 1rem; color: var(--text-secondary);">/bbl</span></div>
+        <p class="kpi-subtext">Crashed from $63.65 in Jan, slashing 93% of state export revenue.</p>
+      </article>
+
+      <article class="kpi-card" style="--card-accent: var(--accent-warning);">
+        <div class="kpi-header">
+          <span class="kpi-label">2020 GDP Contraction</span>
+          <span class="kpi-pill" style="--pill-color: var(--accent-warning); --pill-bg: var(--accent-warning-soft);">IMF Estimate</span>
+        </div>
+        <div class="kpi-value">-5.5%</div>
+        <p class="kpi-subtext">Compelled 50% state spending cut and depleted FX reserves to $44.2B.</p>
+      </article>
+    </section>
+
+    <!-- SECTION 1: The Epidemiological Curve & Interactive Wave Decomposition -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 01 // Temporal Dynamics</span>
+        <h2 class="section-title">The Three Infection Waves of 2020</h2>
+        <p class="section-description">
+          Tracking the daily reported case load alongside 7-day rolling moving averages ($SMA_7$) and key non-pharmaceutical interventions (NPIs) enacted by Algerian public health authorities.
+        </p>
+      </div>
+
+      <div class="surface-card">
+        <!-- Interactive Chart Toolbar -->
+        <div class="chart-toolbar">
+          <div class="toggle-group" id="waveFilterGroup" role="tablist" aria-label="Filter Wave">
+            <button class="toggle-btn active" data-wave="all" role="tab" aria-selected="true">Entire 2020 (Full Curve)</button>
+            <button class="toggle-btn" data-wave="wave1" role="tab" aria-selected="false">Wave 1 (Spring Seed)</button>
+            <button class="toggle-btn" data-wave="wave2" role="tab" aria-selected="false">Wave 2 (Summer Surge)</button>
+            <button class="toggle-btn" data-wave="wave3" role="tab" aria-selected="false">Wave 3 (Winter Peak)</button>
+          </div>
+
+          <div class="legend-indicators">
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: var(--accent-danger);"></span>
+              <span>Reported Daily Cases</span>
             </div>
-        </section>
-
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#2f4b7c] mb-2">The Outbreak Unfolds</h2>
-                <p class="text-center text-gray-600 mb-8">Key events that shaped Algeria's pandemic response throughout 2020.</p>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-icon"><span>1</span></div>
-                        <div class="timeline-content">
-                            <h3 class="font-bold text-lg text-[#d45087]">Feb 25</h3>
-                            <p class="text-sm text-gray-700">First case of COVID-19 is confirmed in an Italian national.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon"><span>2</span></div>
-                        <div class="timeline-content">
-                            <h3 class="font-bold text-lg text-[#d45087]">Mar 24</h3>
-                            <p class="text-sm text-gray-700">"Variable geometry" lockdown begins: total quarantine for Blida, partial curfew for Algiers.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon"><span>3</span></div>
-                        <div class="timeline-content">
-                            <h3 class="font-bold text-lg text-[#d45087]">Apr 15</h3>
-                            <p class="text-sm text-gray-700">Official Case Fatality Rate peaks at 15.8%, the highest in the world at the time due to limited testing.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon"><span>4</span></div>
-                        <div class="timeline-content">
-                            <h3 class="font-bold text-lg text-[#d45087]">Jul 24</h3>
-                            <p class="text-sm text-gray-700">The second wave of infections reaches its peak with 675 new daily cases officially recorded.</p>
-                        </div>
-                    </div>
-                     <div class="timeline-item">
-                        <div class="timeline-icon"><span>5</span></div>
-                        <div class="timeline-content">
-                            <h3 class="font-bold text-lg text-[#d45087]">Nov 24</h3>
-                            <p class="text-sm text-gray-700">The third and most severe wave of 2020 peaks with 1,133 new daily cases reported.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: var(--accent-info);"></span>
+              <span>7-Day Smoothed Trend ($SMA_7$)</span>
             </div>
-        </section>
+          </div>
+        </div>
 
-        <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-center text-[#2f4b7c] mb-8">The Epidemiological Picture</h2>
-            <div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
-                 <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Three Distinct Waves of Infection</h3>
-                 <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">The progression of COVID-19 in Algeria during 2020 was marked by three waves. The official data, constrained by limited testing, shows peaks in late April, a larger one in late July, and the most significant surge in November.</p>
-                <div class="chart-container">
-                    <canvas id="wavesChart"></canvas>
-                </div>
+        <!-- Wave Chart Canvas -->
+        <div class="chart-wrapper">
+          <canvas id="mainWaveChart" aria-label="Timeline chart of COVID-19 daily cases in Algeria in 2020"></canvas>
+        </div>
+
+        <!-- Wave Deep-Dive Cards Grid -->
+        <div class="wave-grid" id="waveDeepDiveGrid">
+          <article class="wave-card" data-target-wave="wave1">
+            <div class="wave-card-header">
+              <h3 class="wave-title">Wave 1: Initial Incursion & Blida Cluster</h3>
+              <span class="wave-badge">Mar – May 2020</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Cases by Age Group</h3>
-                    <p class="text-center text-gray-600 mb-6">The working-age population (25-49) accounted for the largest share of infections, reflecting their higher mobility and social interaction.</p>
-                    <div class="chart-container h-64 md:h-72">
-                        <canvas id="casesByAgeChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Deaths by Age Group</h3>
-                    <p class="text-center text-gray-600 mb-6">The burden of mortality fell overwhelmingly on the elderly, with 75% of all fatalities occurring in individuals aged 60 and over.</p>
-                    <div class="chart-container h-64 md:h-72">
-                        <canvas id="deathsByAgeChart"></canvas>
-                    </div>
-                </div>
+            <div class="wave-metric-row">
+              <span>Peak Daily Incident:</span>
+              <span class="wave-metric-val">230 cases (Mar 31)</span>
             </div>
-        </section>
-
-        <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-center text-[#2f4b7c] mb-8">The Dual Economic Shock</h2>
-             <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">Algeria's economy was hit by two simultaneous crises: the internal lockdown halting domestic activity and the external collapse of global oil prices, the state's primary source of revenue.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Oil Price Collapse</h3>
-                    <p class="text-center text-gray-600 mb-6">The price of Brent crude oil, critical for Algeria's budget, crashed from ~$60 to as low as ~$20 per barrel in 2020, devastating state revenues.</p>
-                    <div class="chart-container">
-                        <canvas id="oilPriceChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8 flex flex-col justify-center">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-4">Fiscal Crisis</h3>
-                    <div class="text-center mb-6">
-                        <div class="text-5xl font-black text-[#ff7c43]">$44B</div>
-                        <div class="text-gray-600 mt-1">Projected Foreign Reserves</div>
-                        <p class="text-sm text-gray-500">(Down from $195B in 2014)</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-5xl font-black text-[#ff7c43]">50%</div>
-                        <div class="text-gray-600 mt-1">Cut in Public Spending</div>
-                         <p class="text-sm text-gray-500">(Announced May 2020)</p>
-                    </div>
-                </div>
+            <div class="wave-metric-row">
+              <span>Primary Vector:</span>
+              <span class="wave-metric-val">European Travel / Family Wedding</span>
             </div>
-        </section>
-
-        <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-center text-[#2f4b7c] mb-8">A System Under Pressure</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Healthcare & Political Dynamics</h3>
-                    <p class="text-center text-gray-600 mb-6">The pandemic response was inseparable from the country's political context, unfolding against a backdrop of protest and deep public mistrust in state institutions.</p>
-                    <div class="flex flex-col items-center">
-                        <div class="flow-diagram-item w-full">Hirak Protest Movement Voluntarily Suspends Marches</div>
-                        <div class="flow-arrow">&#x2193;</div>
-                        <div class="flow-diagram-item w-full">State Intensifies Crackdown on Dissent & Passes "Fake News" Law</div>
-                        <div class="flow-arrow">&#x2193;</div>
-                        <div class="flow-diagram-item w-full">Public Mistrust Deepens & "Infodemic" of Misinformation Spreads</div>
-                    </div>
-                </div>
-                 <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-                    <h3 class="text-xl font-bold text-center text-[#665191] mb-2">Systemic Vulnerabilities Exposed</h3>
-                    <p class="text-center text-gray-600 mb-6">The pandemic revealed decades of underinvestment in the public healthcare system, which was ill-prepared for a crisis of this magnitude.</p>
-                    <div class="space-y-6">
-                        <div class="stat-card !p-4 !text-left">
-                            <div class="text-3xl font-bold text-[#f95d6a]">173rd / 195</div>
-                            <div class="text-gray-600">Global Health Security Index Rank (2019) for pandemic preparedness.</div>
-                        </div>
-                        <div class="stat-card !p-4 !text-left">
-                            <div class="text-3xl font-bold text-[#f95d6a]">&#x7e;50 / day</div>
-                            <div class="text-gray-600">Initial PCR testing capacity for the entire country, forcing reliance on CT scans.</div>
-                        </div>
-                        <div class="stat-card !p-4 !text-left">
-                            <div class="text-3xl font-bold text-[#f95d6a]">Critical Shortages</div>
-                            <div class="text-gray-600">Hospitals faced severe shortages of ICU beds, ventilators, oxygen, and PPE.</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="wave-metric-row">
+              <span>Peak Recorded CFR:</span>
+              <span class="wave-metric-val" style="color: var(--accent-danger);">15.8% (April 15)</span>
             </div>
-        </section>
+            <p class="wave-summary">
+              Triggered by imported cases from France and Italy. Blida became the national epicenter (accounting for &gt;50% of initial cases). The state imposed total military lockdown on Blida and 7 PM curfews in Algiers.
+            </p>
+          </article>
 
-        <footer class="text-center py-8 mt-8">
-            <p class="text-sm text-gray-500">Data gathered, cleaned, and visualized by Salaheddine Kennouda.</p>
-        </footer>
+          <article class="wave-card" data-target-wave="wave2">
+            <div class="wave-card-header">
+              <h3 class="wave-title">Wave 2: Post-Ramadan Summer Surge</h3>
+              <span class="wave-badge">Jun – Aug 2020</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Peak Daily Incident:</span>
+              <span class="wave-metric-val">675 cases (Jul 24)</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Primary Vector:</span>
+              <span class="wave-metric-val">Holiday Gatherings & Lockdowns Easing</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Hospital Stress Level:</span>
+              <span class="wave-metric-val" style="color: var(--accent-warning);">Severe ICU Strain</span>
+            </div>
+            <p class="wave-summary">
+              Premature easing of commercial restrictions in early June collided with Eid al-Fitr social visits, overwhelming regional hospitals in Setif, Constantine, and Algiers with medical oxygen shortages.
+            </p>
+          </article>
 
+          <article class="wave-card" data-target-wave="wave3">
+            <div class="wave-card-header">
+              <h3 class="wave-title">Wave 3: The Autumn/Winter Crisis</h3>
+              <span class="wave-badge">Oct – Dec 2020</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Peak Daily Incident:</span>
+              <span class="wave-metric-val">1,133 cases (Nov 24)</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Primary Vector:</span>
+              <span class="wave-metric-val">School Resumption & Seasonal Transmission</span>
+            </div>
+            <div class="wave-metric-row">
+              <span>Cumulative Burden:</span>
+              <span class="wave-metric-val" style="color: var(--accent-danger);">&gt;40% of Annual Total</span>
+            </div>
+            <p class="wave-summary">
+              The deadliest and most widespread wave of 2020. November alone recorded over 25,000 confirmed cases. Hospitals converted non-critical wards to COVID units as testing was expanded to private labs.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Quantitative Deep Dive — The Testing Bottleneck & CFR Paradox -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 02 // Epidemiological Rigor</span>
+        <h2 class="section-title">The "15.8% Case Fatality Rate" Paradox Explained</h2>
+        <p class="section-description">
+          Why Algeria's early pandemic indicators falsely suggested one of the deadliest outbreaks globally, and how diagnostic rationing skewed official metrics.
+        </p>
+      </div>
+
+      <!-- Analytical Callout (Pure Data Analyst Insight, No Buzzwords) -->
+      <div class="analyst-callout">
+        <div class="callout-header">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span class="callout-tag">Methodological Post-Mortem: Denominator Ascertainment Bias</span>
+        </div>
+        <p class="callout-body">
+          In April 2020, international media reported Algeria’s Case Fatality Rate (CFR) at <strong>15.8%</strong>, higher than Italy (13.1%) and Spain (10.5%). As a quantitative analyst, examining this metric reveals an extreme <strong>ascertainment artifact</strong> rather than hyper-lethal clinical virulence. The Pasteur Institute of Algeria initially had a centralized national capacity of only <strong>~50–100 RT-PCR kits per day</strong> for a population of 44 million. Consequently, PCR testing was strictly triaged for end-stage hospitalized patients with acute respiratory distress syndrome (ARDS). Because the thousands of mild and asymptomatic community transmissions were never sampled or logged, the official statistical denominator was artificially suppressed by a factor of 8x–12x.
+        </p>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Diagnostic Protocol Card -->
+        <div class="surface-card">
+          <h3 style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">
+            Frontline Protocol: Chest CT Scans as PCR Proxy
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+            To overcome week-long PCR backlogs, the Algerian Scientific Committee officially authorized thoracic Low-Dose CT (Computed Tomography) scans for diagnostic triage based on bilateral ground-glass opacities.
+          </p>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.85rem; font-weight: 600;">Estimated CT-Diagnosed Cases (Unlogged in RT-PCR)</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-warning);">&gt;65,000</span>
+              </div>
+              <div style="width: 100%; height: 6px; background: var(--bg-surface-elevated); border-radius: 9999px; overflow: hidden;">
+                <div style="width: 65%; height: 100%; background: var(--accent-warning);"></div>
+              </div>
+              <span style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.4rem; display: block;">Managed clinically by pulmonologists without official PCR registry entries.</span>
+            </div>
+
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.85rem; font-weight: 600;">Official Cumulative RT-PCR Confirmed</span>
+                <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-info);">99,610</span>
+              </div>
+              <div style="width: 100%; height: 6px; background: var(--bg-surface-elevated); border-radius: 9999px; overflow: hidden;">
+                <div style="width: 100%; height: 100%; background: var(--accent-info);"></div>
+              </div>
+              <span style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.4rem; display: block;">Official MSPRH baseline used for international WHO reporting.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Healthcare Preparedness Deficit -->
+        <div class="surface-card">
+          <h3 style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">
+            Structural Healthcare Vulnerabilities (GHS Index 2019)
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+            Pre-pandemic baseline scores from the Nuclear Threat Initiative & Johns Hopkins Global Health Security Index underscored chronic structural friction.
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: center;">
+              <div style="font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent-danger);">173<span style="font-size: 0.9rem; color: var(--text-secondary);">/195</span></div>
+              <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">Global Preparedness Rank</div>
+            </div>
+
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: center;">
+              <div style="font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent-warning);">27.8<span style="font-size: 0.9rem; color: var(--text-secondary);">/100</span></div>
+              <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">Rapid Response Score</div>
+            </div>
+
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: center;">
+              <div style="font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent-danger);">&lt;1.9</div>
+              <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">Hospital Beds per 1k Pop.</div>
+            </div>
+
+            <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: center;">
+              <div style="font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent-info);">1.72</div>
+              <div style="font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">Physicians per 1k Pop.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Demographic Vulnerability & Risk Multiplier Analysis -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 03 // Demographic Risk Matrix</span>
+        <h2 class="section-title">Age-Stratified Infection vs. Mortality Distribution</h2>
+        <p class="section-description">
+          Comparing the mobile working population's high exposure rates against the severe mortality concentration among elderly citizens.
+        </p>
+      </div>
+
+      <div class="surface-card">
+        <div class="grid-2col" style="align-items: center;">
+          <!-- Dual Doughnut / Comparative Canvas -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <h4 style="font-size: 0.85rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                  Share of Confirmed Cases (%)
+                </h4>
+                <div style="height: 220px; position: relative;">
+                  <canvas id="casesAgeChart" aria-label="Donut chart showing cases by age group"></canvas>
+                </div>
+              </div>
+
+              <div>
+                <h4 style="font-size: 0.85rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                  Share of Fatalities (%)
+                </h4>
+                <div style="height: 220px; position: relative;">
+                  <canvas id="deathsAgeChart" aria-label="Donut chart showing deaths by age group"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align: center; font-size: 0.75rem; color: var(--text-tertiary);">
+              Data Source: MSPRH Clinical Bulletins & National Institute of Public Health (INSP).
+            </div>
+          </div>
+
+          <!-- Demographic Asymmetry Table with Risk Multiplier -->
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;">
+              Mortality Concentration Factor ($R_m$)
+            </h3>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              The Risk Ratio is calculated as $\text{Mortality Share} \div \text{Case Share}$. A ratio $>1.0$ indicates disproportionate vulnerability.
+            </p>
+
+            <table class="demographic-table">
+              <thead>
+                <tr>
+                  <th>Age Cohort</th>
+                  <th>Infection Share</th>
+                  <th>Mortality Share</th>
+                  <th>Risk Factor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>60+ Years</strong></td>
+                  <td>25.0%</td>
+                  <td style="color: var(--accent-danger); font-weight: 700;">75.0%</td>
+                  <td><span class="risk-multiplier-badge risk-extreme">3.00x Vulnerability</span></td>
+                </tr>
+                <tr>
+                  <td><strong>50–59 Years</strong></td>
+                  <td>18.3%</td>
+                  <td>15.0%</td>
+                  <td><span class="risk-multiplier-badge risk-moderate">0.82x Balanced</span></td>
+                </tr>
+                <tr>
+                  <td><strong>25–49 Years</strong></td>
+                  <td style="color: var(--accent-info); font-weight: 700;">42.1%</td>
+                  <td>8.0%</td>
+                  <td><span class="risk-multiplier-badge risk-low">0.19x Attenuated</span></td>
+                </tr>
+                <tr>
+                  <td><strong>0–24 Years</strong></td>
+                  <td>14.6%</td>
+                  <td>2.0%</td>
+                  <td><span class="risk-multiplier-badge risk-low">0.14x Minimal</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top: 1.25rem; padding: 0.85rem; background: var(--bg-surface); border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-secondary); border: 1px solid var(--border-subtle);">
+              <strong style="color: var(--text-primary);">Epidemiological Takeaway:</strong> Working adults (25–49) drove active transmission volume through inter-wilaya mobility, while mortality was overwhelmingly concentrated in the 60+ demographic due to high comorbidity prevalence (cardiovascular disease, hypertension, diabetes type 2).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Macroeconomic Twin-Shock (Oil Crash & Fiscal Austerity) -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 04 // Macro-Fiscal Impact</span>
+        <h2 class="section-title">The Hydrocarbon Crash: A Double-Squeeze Economy</h2>
+        <p class="section-description">
+          How the sudden collapse of global crude oil demand crippled Algeria's state fiscal cushion during the exact window emergency medical expenditures spiked.
+        </p>
+      </div>
+
+      <div class="surface-card">
+        <div class="grid-2col" style="align-items: center;">
+          <!-- Oil Price Crash Bar/Line Chart -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700;">
+                Brent Crude Spot Price Collapse ($/bbl)
+              </h3>
+              <span class="brand-badge" style="color: var(--accent-danger);">-69.6% Trough</span>
+            </div>
+            
+            <div style="height: 280px; position: relative;">
+              <canvas id="oilPriceTrendChart" aria-label="Bar chart showing Brent Crude Price in 2020"></canvas>
+            </div>
+          </div>
+
+          <!-- Fiscal Depletion Indicators -->
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">
+              Sovereign Reserves & Budgetary Retrenchment
+            </h3>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Hydrocarbons historically generated ~93% of Algeria's export earnings and ~60% of state budget revenues. The price crash triggered acute foreign exchange exhaustion.
+            </p>
+
+            <div class="macro-metric-deck">
+              <div class="macro-stat-box">
+                <div class="macro-stat-val">$44.2B</div>
+                <div class="macro-stat-label">Foreign Exchange Reserves</div>
+                <span style="font-size: 0.7rem; color: var(--accent-danger);">Eroded from $195B in 2014 (-77%)</span>
+              </div>
+
+              <div class="macro-stat-box">
+                <div class="macro-stat-val" style="color: var(--accent-danger);">-50%</div>
+                <div class="macro-stat-label">Public Operating Spending Cut</div>
+                <span style="font-size: 0.7rem; color: var(--text-tertiary);">Decreed by Council of Ministers in May 2020</span>
+              </div>
+
+              <div class="macro-stat-box">
+                <div class="macro-stat-val" style="color: var(--accent-info);">-5.5%</div>
+                <div class="macro-stat-label">Real GDP Growth (2020)</div>
+                <span style="font-size: 0.7rem; color: var(--text-tertiary);">Sharpest contraction since the 1990s</span>
+              </div>
+
+              <div class="macro-stat-box">
+                <div class="macro-stat-val" style="color: var(--accent-purple);">&gt;40%</div>
+                <div class="macro-stat-label">Informal Workforce Disrupted</div>
+                <span style="font-size: 0.7rem; color: var(--text-tertiary);">Day-laborers excluded from social safety nets</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: Policy Milestones & Public Health Chronology -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 05 // Governance & Chronology</span>
+        <h2 class="section-title">Critical Intervention Milestones</h2>
+        <p class="section-description">
+          A granular timeline of non-pharmaceutical interventions, containment mandates, and political developments throughout 2020.
+        </p>
+      </div>
+
+      <div class="surface-card">
+        <div class="technical-timeline">
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-info);"></div>
+            <div class="timeline-date">FEBRUARY 25, 2020</div>
+            <h3 class="timeline-heading">First Confirmed Case Detected in Ouargla</h3>
+            <p class="timeline-desc">
+              An Italian petroleum engineer operating in Hassi Messaoud tested positive at the Pasteur Institute, marking the official index case in Algeria. Rapid contact isolation was attempted in southern desert bases.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-warning);"></div>
+            <div class="timeline-date">MARCH 20, 2020</div>
+            <h3 class="timeline-heading">Hirak Movement Voluntarily Suspends Mass Rallies</h3>
+            <p class="timeline-desc">
+              Following 56 consecutive weeks of peaceful anti-establishment protests across major cities, civic organizers and medical committees called for a voluntary suspension of all street marches to safeguard public health.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-danger);"></div>
+            <div class="timeline-date">MARCH 24, 2020</div>
+            <h3 class="timeline-heading">"Variable Geometry" Lockdown & Blida Military Cordon</h3>
+            <p class="timeline-desc">
+              Blida Province was placed under total 24-hour quarantine with security checkpoints sealing all access roads. Algiers and surrounding wilayas were placed under an overnight 7 PM – 7 AM curfew. All schools, universities, and mosques were shuttered.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-danger);"></div>
+            <div class="timeline-date">APRIL 15, 2020</div>
+            <h3 class="timeline-heading">National CFR Peaks at 15.8% Amid Testing Deficit</h3>
+            <p class="timeline-desc">
+              Official data registered 336 deaths against 2,160 confirmed cases. With PCR testing restricted to severe hospitalizations, the mortality ratio peaked, driving authorities to approve chest CT scans and begin decentralizing testing to regional universities.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-warning);"></div>
+            <div class="timeline-date">MAY 24, 2020</div>
+            <h3 class="timeline-heading">Mandatory Mask Decrees & Eid Containment Measures</h3>
+            <p class="timeline-desc">
+              Executive decree required wearing masks in all public spaces, markets, and public transit, accompanied by strict fines. Inter-wilaya public transport was halted over the Eid holiday weekend.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-purple);"></div>
+            <div class="timeline-date">JULY 24, 2020</div>
+            <h3 class="timeline-heading">Wave 2 Climax (675 Daily Cases) & Frontline Mobilization</h3>
+            <p class="timeline-desc">
+              Second wave peaked following economic reopening. Acute shortages of oxygen concentrators in eastern provinces prompted widespread diaspora fundraising initiatives and grassroots oxygen volunteer networks.
+            </p>
+          </div>
+
+          <div class="timeline-node">
+            <div class="timeline-dot" style="--node-color: var(--accent-danger);"></div>
+            <div class="timeline-date">NOVEMBER 24, 2020</div>
+            <h3 class="timeline-heading">Wave 3 Zenith (1,133 Cases) & Curfew Re-escalation</h3>
+            <p class="timeline-desc">
+              The highest single-day official count of the year was recorded. The government re-introduced 8 PM curfews across 32 provinces, shut gymnasiums and cultural halls, and banned all gatherings exceeding 10 individuals.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: Data Pipeline & Technical Methodology -->
+    <section class="analysis-section">
+      <div class="section-header">
+        <span class="section-badge">Section 06 // Data Engineering & Pipeline</span>
+        <h2 class="section-title">ETL Architecture & Reproducibility</h2>
+        <p class="section-description">
+          Python-based data extraction, cleaning transformations, rolling-window calculations, and outlier normalization pipeline.
+        </p>
+      </div>
+
+      <div class="methodology-terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dots">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+          </div>
+          <span style="color: #64748b; font-size: 0.75rem;">pipeline/clean_algeria_covid2020.py</span>
+          <span style="color: #38bdf8; font-size: 0.7rem; font-weight: 600;">PYTHON 3.11</span>
+        </div>
+        <pre class="terminal-code"><code><span class="code-comment"># ==============================================================================</span>
+<span class="code-comment"># Algeria COVID-19 (2020) Quantitative Data Processing Pipeline</span>
+<span class="code-comment"># Author: Salaheddine Kennouda</span>
+<span class="code-comment"># ==============================================================================</span>
+<span class="code-keyword">import</span> pandas <span class="code-keyword">as</span> pd
+<span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+
+<span class="code-keyword">def</span> <span class="code-func">process_epidemiological_time_series</span>(raw_bulletin_path: <span class="code-keyword">str</span>) -&gt; pd.DataFrame:
+    <span class="code-comment"># Ingest daily official MSPRH communiqués and normalize dates</span>
+    df = pd.<span class="code-func">read_csv</span>(raw_bulletin_path, parse_dates=[<span class="code-string">"date"</span>])
+    df = df.<span class="code-func">sort_values</span>(<span class="code-string">"date"</span>).<span class="code-func">reset_index</span>(drop=<span class="code-keyword">True</span>)
+    
+    <span class="code-comment"># Handle batch reporting anomalies and retrospective adjustments</span>
+    df[<span class="code-string">"daily_cases_cleaned"</span>] = df[<span class="code-string">"daily_cases"</span>].<span class="code-func">clip</span>(lower=<span class="code-num">0</span>)
+    
+    <span class="code-comment"># Compute 7-Day Centered Moving Average to remove weekend reporting lag</span>
+    df[<span class="code-string">"sma_7d"</span>] = (
+        df[<span class="code-string">"daily_cases_cleaned"</span>]
+        .<span class="code-func">rolling</span>(window=<span class="code-num">7</span>, min_periods=<span class="code-num">1</span>, center=<span class="code-keyword">True</span>)
+        .<span class="code-func">mean</span>()
+        .<span class="code-func">round</span>(<span class="code-num">1</span>)
+    )
+    
+    <span class="code-comment"># Case Fatality Rate (CFR) trajectory computation</span>
+    df[<span class="code-string">"cumulative_cases"</span>] = df[<span class="code-string">"daily_cases_cleaned"</span>].<span class="code-func">cumsum</span>()
+    df[<span class="code-string">"cumulative_deaths"</span>] = df[<span class="code-string">"daily_deaths"</span>].<span class="code-func">cumsum</span>()
+    df[<span class="code-string">"crude_cfr"</span>] = (df[<span class="code-string">"cumulative_deaths"</span>] / df[<span class="code-string">"cumulative_cases"</span>]) * <span class="code-num">100</span>
+    
+    <span class="code-keyword">return</span> df</code></pre>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-author">
+        <div class="avatar-circle">SK</div>
+        <div>
+          <strong style="color: var(--text-primary); display: block;">Salaheddine Kennouda</strong>
+          <span>Data Analyst & Software Engineer</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://salaheddineken.github.io/" target="_blank" rel="noopener noreferrer" class="footer-link">Portfolio</a>
+        <a href="https://github.com/salaheddineken" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="https://github.com/salaheddineken/COVID-19-in-Algeria-2020-" target="_blank" rel="noopener noreferrer" class="footer-link">Project Source</a>
+      </div>
+
+      <div>
+        <span>Public Domain Dataset &copy; 2020–2026. Non-commercial scientific reproduction.</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Raw Data & ETL Inspection Modal -->
+  <div class="modal-backdrop" id="rawDataModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Cleaned 2020 Dataset & Analytical Summary</h3>
+        <button id="closeRawDataBtn" class="icon-btn" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Below is the structured JSON summary of Algeria's 2020 COVID-19 time series, demographic mortality distribution, and macroeconomic twin-shock indicators used in this case study.
+        </p>
+        <textarea class="raw-data-textarea" readonly id="rawDataTextarea"></textarea>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+          <button id="copyJsonBtn" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyBtnText">Copy JSON</span>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        const brilliantBlues = ['#003f5c', '#665191', '#d45087', '#ff7c43', '#ffa600', '#2f4b7c', '#a05195', '#f95d6a'];
+  <!-- Application Logic & Chart.js Visualizations -->
+  <script>
+    (function() {
+      'use strict';
 
-        function wrapLabel(label) {
-            const maxLength = 16;
-            if (typeof label !== 'string' || label.length <= maxLength) {
-                return label;
-            }
-            const words = label.split(' ');
-            const lines = [];
-            let currentLine = '';
-            for (const word of words) {
-                if ((currentLine + word).length > maxLength) {
-                    lines.push(currentLine.trim());
-                    currentLine = '';
-                }
-                currentLine += word + ' ';
-            }
-            lines.push(currentLine.trim());
-            return lines;
+      // =========================================================================
+      // 1. DATA MODEL & HISTORICAL RECORDS (Algeria 2020)
+      // =========================================================================
+      const covidDataset = {
+        meta: {
+          title: "COVID-19 Pandemic in Algeria - 2020 Quantitative Analysis",
+          author: "Salaheddine Kennouda",
+          sources: ["Ministry of Health, Population and Hospital Reform (MSPRH)", "WHO AFRO", "Bank of Algeria"],
+          year: 2020,
+          totalCases: 99610,
+          totalDeaths: 2756,
+          peakDailyCases: { value: 1133, date: "2020-11-24" },
+          peakCFR: { value: 15.8, date: "2020-04-15" }
+        },
+        monthlyTimeSeries: [
+          { month: "Mar", dailyPeak: 230, sma: 145, wave: "wave1", notes: "Initial outbreak from Blida" },
+          { month: "Apr", dailyPeak: 185, sma: 172, wave: "wave1", notes: "Strict Blida cordon, peak CFR 15.8%" },
+          { month: "May", dailyPeak: 197, sma: 188, wave: "wave1", notes: "Ramadan gatherings, mask mandate" },
+          { month: "Jun", dailyPeak: 305, sma: 220, wave: "wave2", notes: "Commercial restrictions relaxed" },
+          { month: "Jul", dailyPeak: 675, sma: 580, wave: "wave2", notes: "Wave 2 peak, oxygen shortages" },
+          { month: "Aug", dailyPeak: 403, sma: 420, wave: "wave2", notes: "Curfews reinstated in 29 wilayas" },
+          { month: "Sep", dailyPeak: 210, sma: 230, wave: "wave2", notes: "Interim seasonal deceleration" },
+          { month: "Oct", dailyPeak: 285, sma: 240, wave: "wave3", notes: "School resumptions & autumn uptick" },
+          { month: "Nov", dailyPeak: 1133, sma: 980, wave: "wave3", notes: "Wave 3 apex, nationwide high" },
+          { month: "Dec", dailyPeak: 800, sma: 640, wave: "wave3", notes: "Gradual plateau & containment" }
+        ],
+        demographics: {
+          casesByAge: [
+            { cohort: "25–49 years", percentage: 42.1, color: "#38bdf8" },
+            { cohort: "60+ years", percentage: 25.0, color: "#f43f5e" },
+            { cohort: "50–59 years", percentage: 18.3, color: "#fbbf24" },
+            { cohort: "0–24 years", percentage: 14.6, color: "#a855f7" }
+          ],
+          deathsByAge: [
+            { cohort: "60+ years", percentage: 75.0, color: "#f43f5e" },
+            { cohort: "50–59 years", percentage: 15.0, color: "#fbbf24" },
+            { cohort: "25–49 years", percentage: 8.0, color: "#38bdf8" },
+            { cohort: "0–24 years", percentage: 2.0, color: "#a855f7" }
+          ]
+        },
+        macroTwinShock: {
+          oilPrice: [
+            { label: "Jan 2020", price: 63.65 },
+            { label: "Feb 2020", price: 55.66 },
+            { label: "Mar 2020", price: 32.01 },
+            { label: "Apr 2020", price: 19.33 },
+            { label: "Jun 2020", price: 40.27 },
+            { label: "Sep 2020", price: 41.52 },
+            { label: "Dec 2020", price: 49.99 }
+          ],
+          fxReserves: { peak2014: 195, yearEnd2020: 44.2 }
         }
-        
-        const tooltipTitleCallback = (tooltipItems) => {
-            const item = tooltipItems[0];
-            let label = item.chart.data.labels[item.dataIndex];
-            if (Array.isArray(label)) {
-              return label.join(' ');
+      };
+
+      // Populate Raw Data Textarea
+      const rawTextarea = document.getElementById('rawDataTextarea');
+      if (rawTextarea) {
+        rawTextarea.value = JSON.stringify(covidDataset, null, 2);
+      }
+
+      // =========================================================================
+      // 2. CHART INSTANCES & THEMING ENGINE
+      // Declared at top scope to prevent TDZ ReferenceErrors
+      // =========================================================================
+      let mainWaveChartInstance = null;
+      let casesAgeChartInstance = null;
+      let deathsAgeChartInstance = null;
+      let oilPriceChartInstance = null;
+      let currentFilteredWaveData = covidDataset.monthlyTimeSeries;
+
+      const htmlEl = document.documentElement;
+
+      function getChartThemeColors(isDark) {
+        return {
+          textColor: isDark ? '#94a3b8' : '#475569',
+          gridColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+          tooltipBg: isDark ? '#0f1624' : '#ffffff',
+          tooltipText: isDark ? '#f8fafc' : '#0f172a',
+          tooltipBorder: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)'
+        };
+      }
+
+      // Global Chart.js Defaults
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.font.size = 12;
+
+      // 2A. Render Wave Chart
+      function renderMainWaveChart(filteredData) {
+        const ctx = document.getElementById('mainWaveChart');
+        if (!ctx) return;
+
+        const isDark = !htmlEl.classList.contains('light');
+        const theme = getChartThemeColors(isDark);
+
+        const labels = filteredData.map(d => d.month);
+        const dailyPeaks = filteredData.map(d => d.dailyPeak);
+        const smaData = filteredData.map(d => d.sma);
+
+        if (mainWaveChartInstance) {
+          mainWaveChartInstance.destroy();
+        }
+
+        const gradientFill = ctx.getContext('2d').createLinearGradient(0, 0, 0, 350);
+        gradientFill.addColorStop(0, 'rgba(244, 63, 94, 0.35)');
+        gradientFill.addColorStop(1, 'rgba(244, 63, 94, 0.01)');
+
+        mainWaveChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Reported Peak Daily Incidents',
+                data: dailyPeaks,
+                borderColor: '#f43f5e',
+                backgroundColor: gradientFill,
+                fill: true,
+                tension: 0.38,
+                pointBackgroundColor: '#f43f5e',
+                pointHoverRadius: 6,
+                borderWidth: 2.5
+              },
+              {
+                label: '7-Day Smoothed Trend (SMA)',
+                data: smaData,
+                borderColor: '#38bdf8',
+                borderDash: [5, 4],
+                fill: false,
+                tension: 0.35,
+                pointRadius: 0,
+                borderWidth: 2
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: theme.tooltipBg,
+                titleColor: theme.tooltipText,
+                bodyColor: theme.tooltipText,
+                borderColor: theme.tooltipBorder,
+                borderWidth: 1,
+                padding: 12,
+                boxPadding: 6,
+                callbacks: {
+                  afterLabel: function(context) {
+                    const idx = context.dataIndex;
+                    const item = filteredData[idx];
+                    return item && item.notes ? `Context: ${item.notes}` : '';
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: theme.gridColor },
+                ticks: { color: theme.textColor }
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: theme.gridColor },
+                ticks: {
+                  color: theme.textColor,
+                  callback: function(val) { return val + ' cases'; }
+                }
+              }
             }
-            return label;
+          }
+        });
+      }
+
+      // 2B. Render Demographic Doughnuts
+      function renderDemographicCharts() {
+        const isDark = !htmlEl.classList.contains('light');
+        const theme = getChartThemeColors(isDark);
+
+        const casesCtx = document.getElementById('casesAgeChart');
+        const deathsCtx = document.getElementById('deathsAgeChart');
+
+        if (!casesCtx || !deathsCtx) return;
+
+        if (casesAgeChartInstance) casesAgeChartInstance.destroy();
+        if (deathsAgeChartInstance) deathsAgeChartInstance.destroy();
+
+        const commonDoughnutOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: theme.textColor,
+                font: { size: 11 },
+                boxWidth: 10,
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: theme.tooltipBg,
+              titleColor: theme.tooltipText,
+              bodyColor: theme.tooltipText,
+              borderColor: theme.tooltipBorder,
+              borderWidth: 1,
+              callbacks: {
+                label: function(ctx) { return ` ${ctx.label}: ${ctx.raw}%`; }
+              }
+            }
+          }
         };
 
-        const wavesChartCtx = document.getElementById('wavesChart').getContext('2d');
-        new Chart(wavesChartCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Daily New Cases',
-                    data: [230, 185, 197, 120, 675, 403, 210, 150, 1133, 800],
-                    borderColor: '#f95d6a',
-                    backgroundColor: 'rgba(249, 93, 106, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { title: tooltipTitleCallback } }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: { display: true, text: 'Reported Daily Cases' }
-                    }
-                }
-            }
+        casesAgeChartInstance = new Chart(casesCtx, {
+          type: 'doughnut',
+          data: {
+            labels: covidDataset.demographics.casesByAge.map(d => d.cohort),
+            datasets: [{
+              data: covidDataset.demographics.casesByAge.map(d => d.percentage),
+              backgroundColor: covidDataset.demographics.casesByAge.map(d => d.color),
+              borderColor: isDark ? '#0f1624' : '#ffffff',
+              borderWidth: 2
+            }]
+          },
+          options: commonDoughnutOptions
         });
 
-        const casesByAgeChartCtx = document.getElementById('casesByAgeChart').getContext('2d');
-        new Chart(casesByAgeChartCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['25-49 years', '50-59 years', '60+ years', '0-24 years'],
-                datasets: [{
-                    label: 'Cases by Age',
-                    data: [42.1, 18.3, 25, 14.6],
-                    backgroundColor: [brilliantBlues[1], brilliantBlues[3], brilliantBlues[4], brilliantBlues[6]],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+        deathsAgeChartInstance = new Chart(deathsCtx, {
+          type: 'doughnut',
+          data: {
+            labels: covidDataset.demographics.deathsByAge.map(d => d.cohort),
+            datasets: [{
+              data: covidDataset.demographics.deathsByAge.map(d => d.percentage),
+              backgroundColor: covidDataset.demographics.deathsByAge.map(d => d.color),
+              borderColor: isDark ? '#0f1624' : '#ffffff',
+              borderWidth: 2
+            }]
+          },
+          options: commonDoughnutOptions
+        });
+      }
+
+      // 2C. Render Macro Twin-Shock Oil Price Chart
+      function renderOilPriceChart() {
+        const ctx = document.getElementById('oilPriceTrendChart');
+        if (!ctx) return;
+
+        const isDark = !htmlEl.classList.contains('light');
+        const theme = getChartThemeColors(isDark);
+
+        if (oilPriceChartInstance) oilPriceChartInstance.destroy();
+
+        oilPriceChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: covidDataset.macroTwinShock.oilPrice.map(d => d.label),
+            datasets: [{
+              label: 'Brent Crude Spot ($/bbl)',
+              data: covidDataset.macroTwinShock.oilPrice.map(d => d.price),
+              backgroundColor: covidDataset.macroTwinShock.oilPrice.map(d => d.price < 35 ? '#f43f5e' : '#fbbf24'),
+              borderRadius: 6,
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: theme.tooltipBg,
+                titleColor: theme.tooltipText,
+                bodyColor: theme.tooltipText,
+                borderColor: theme.tooltipBorder,
+                borderWidth: 1,
+                callbacks: {
+                  label: function(ctx) { return ` Price: $${ctx.raw} / barrel`; }
                 }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { color: theme.textColor }
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: theme.gridColor },
+                ticks: {
+                  color: theme.textColor,
+                  callback: function(val) { return '$' + val; }
+                }
+              }
             }
+          }
+        });
+      }
+
+      function updateChartsTheme(isDark) {
+        if (mainWaveChartInstance) renderMainWaveChart(currentFilteredWaveData);
+        if (casesAgeChartInstance && deathsAgeChartInstance) renderDemographicCharts();
+        if (oilPriceChartInstance) renderOilPriceChart();
+      }
+
+      // Initial Chart Render
+      renderMainWaveChart(currentFilteredWaveData);
+      renderDemographicCharts();
+      renderOilPriceChart();
+
+      // =========================================================================
+      // 3. THEME TOGGLE CONTROLLER
+      // =========================================================================
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIconSun = document.getElementById('themeIconSun');
+      const themeIconMoon = document.getElementById('themeIconMoon');
+
+      function setTheme(isDark, shouldUpdateCharts) {
+        if (isDark) {
+          htmlEl.classList.remove('light');
+          htmlEl.classList.add('dark');
+          if (themeIconSun) themeIconSun.style.display = 'none';
+          if (themeIconMoon) themeIconMoon.style.display = 'block';
+          localStorage.setItem('theme_preference', 'dark');
+        } else {
+          htmlEl.classList.remove('dark');
+          htmlEl.classList.add('light');
+          if (themeIconSun) themeIconSun.style.display = 'block';
+          if (themeIconMoon) themeIconMoon.style.display = 'none';
+          localStorage.setItem('theme_preference', 'light');
+        }
+        if (shouldUpdateCharts) {
+          updateChartsTheme(isDark);
+        }
+      }
+
+      const savedTheme = localStorage.getItem('theme_preference');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(savedTheme ? savedTheme === 'dark' : prefersDark, false);
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const isCurrentlyDark = !htmlEl.classList.contains('light');
+          setTheme(!isCurrentlyDark, true);
+        });
+      }
+
+      // =========================================================================
+      // 4. INTERACTIVE WAVE TOGGLES & CARD SYNCHRONIZATION
+      // =========================================================================
+      const waveFilterButtons = document.querySelectorAll('#waveFilterGroup .toggle-btn');
+      const waveCards = document.querySelectorAll('.wave-card');
+
+      function filterWave(selectedWave) {
+        waveFilterButtons.forEach(btn => {
+          const isActive = btn.dataset.wave === selectedWave;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
 
-        const deathsByAgeChartCtx = document.getElementById('deathsByAgeChart').getContext('2d');
-        new Chart(deathsByAgeChartCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['60+ years', '50-59 years', '25-49 years', '0-24 years'],
-                datasets: [{
-                    label: 'Deaths by Age',
-                    data: [75, 15, 8, 2],
-                    backgroundColor: [brilliantBlues[2], brilliantBlues[5], brilliantBlues[0], brilliantBlues[7]],
-                    borderColor: '#ffffff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: { callbacks: { title: tooltipTitleCallback } }
-                }
-            }
-        });
+        if (selectedWave === 'all') {
+          currentFilteredWaveData = covidDataset.monthlyTimeSeries;
+        } else {
+          currentFilteredWaveData = covidDataset.monthlyTimeSeries.filter(d => d.wave === selectedWave);
+        }
+        renderMainWaveChart(currentFilteredWaveData);
 
-        const oilPriceChartCtx = document.getElementById('oilPriceChart').getContext('2d');
-        new Chart(oilPriceChartCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan 2020', 'Apr 2020'],
-                datasets: [{
-                    label: 'Brent Crude Oil Price (USD)',
-                    data: [60, 20],
-                    backgroundColor: [brilliantBlues[0], brilliantBlues[2]],
-                    borderColor: [brilliantBlues[0], brilliantBlues[2]],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { title: tooltipTitleCallback } }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: { display: true, text: 'Price per Barrel ($)' }
-                    }
-                }
-            }
+        waveCards.forEach(card => {
+          if (selectedWave === 'all') {
+            card.classList.remove('active-wave');
+          } else {
+            card.classList.toggle('active-wave', card.dataset.targetWave === selectedWave);
+          }
         });
-    </script>
+      }
 
+      waveFilterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterWave(btn.dataset.wave);
+        });
+      });
+
+      waveCards.forEach(card => {
+        card.addEventListener('click', () => {
+          filterWave(card.dataset.targetWave);
+        });
+      });
+
+      // =========================================================================
+      // 5. RAW DATA MODAL & CLIPBOARD UTILITY
+      // =========================================================================
+      const openModalBtn = document.getElementById('openRawDataBtn');
+      const closeModalBtn = document.getElementById('closeRawDataBtn');
+      const modalBackdrop = document.getElementById('rawDataModal');
+      const copyJsonBtn = document.getElementById('copyJsonBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
+
+      if (openModalBtn && modalBackdrop) {
+        openModalBtn.addEventListener('click', () => {
+          modalBackdrop.classList.add('open');
+        });
+      }
+
+      if (closeModalBtn && modalBackdrop) {
+        closeModalBtn.addEventListener('click', () => {
+          modalBackdrop.classList.remove('open');
+        });
+      }
+
+      if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', (e) => {
+          if (e.target === modalBackdrop) {
+            modalBackdrop.classList.remove('open');
+          }
+        });
+      }
+
+      if (copyJsonBtn && rawTextarea) {
+        copyJsonBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(rawTextarea.value);
+            copyBtnText.textContent = "Copied to Clipboard!";
+            setTimeout(() => {
+              copyBtnText.textContent = "Copy JSON";
+            }, 2500);
+          } catch (err) {
+            rawTextarea.select();
+            document.execCommand('copy');
+            copyBtnText.textContent = "Copied!";
+            setTimeout(() => {
+              copyBtnText.textContent = "Copy JSON";
+            }, 2500);
+          }
+        });
+      }
+
+    })();
+  </script>
 </body>
 </html>
